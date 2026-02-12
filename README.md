@@ -1,8 +1,8 @@
-# 📚 Django Book Distribution System – Rumi Press
+# 📚 Vietnamese Quiz Application – VQuiz
 
 ## 🔍 Overview
 
-This project simulates a real-world development scenario for Rumi Press, one of the largest book distribution houses in the EdTech industry. As an intermediate software developer, I built a Django-based web application that automates and enhances their book distribution process.
+This project simulates a real-world software development scenario for building an educational quiz application in Java. As an intermediate software developer, I built a Java-based application that allows users to take Vietnamese quizzes, track scores, and manage question banks efficiently.
 
 ---
 
@@ -14,22 +14,22 @@ This project simulates a real-world development scenario for Rumi Press, one of 
 
 ## 🧠 Skills Demonstrated
 
-- Developing **data models** in Django
-- Scaffolding applications using **Django Admin**
-- Creating **visual reports** in Django apps
-- Migrating data from **spreadsheets** into Django
-- Using **Git** for branching and committing code
+- Developing **object-oriented models** in Java  
+- Creating **CRUD operations** for quiz questions and categories  
+- Implementing **score tracking and reporting**  
+- Reading and writing data from **CSV or JSON files**  
+- Using **Git** for version control and collaboration  
 
 ---
 
 ## 🛠 What I Built
 
-By the end of this experience, I delivered a Django project with:
+By the end of this experience, I delivered a Java project with:
 
-- Functional CRUD views for managing book categories and book details
-- Report views summarizing distribution expenses by category
-- Import capabilities for existing spreadsheet data
-- A shareable summary to showcase to potential employers
+- Functional CRUD operations for managing quiz categories and questions  
+- Score tracking for users after each quiz attempt  
+- Import capabilities for question banks from CSV or JSON files  
+- Simple reporting to show user performance and high scores  
 
 ---
 
@@ -38,47 +38,47 @@ By the end of this experience, I delivered a Django project with:
 This project was developed in 4 phases:
 
 1. **Project Scenario**  
-   Understand the business challenge at Rumi Press
+   Understand the requirements of an educational quiz application
 
 2. **Build the Project**  
-   Construct Django models, views, admin interfaces, and reporting tools
+   Design Java classes, CRUD operations, score tracking, and reporting features
 
 3. **Showcase to Employers**  
-   Document outcomes and publish results professionally
+   Document outcomes and provide a working demo
 
 4. **Add to Portfolio**  
-   Present a unique and complete solution for future career opportunities
+   Present a polished, functional solution suitable for software engineering internships  
 
 ---
 
 ## 🧩 What Makes This Project Unique
 
-- The project has **no fixed solution**, encouraging creativity and ownership
-- Simulates a realistic business workflow
-- Encourages the use of internet research and provided resources
-- Designed to showcase both **technical execution** and **problem-solving** skills
+- The project has **flexible design**, allowing new question types or categories  
+- Simulates a realistic educational application workflow  
+- Encourages clean **object-oriented programming** and file/database handling  
+- Designed to showcase both **technical execution** and **problem-solving skills**  
 
 ---
 
-## 🏢 Project Scenario: Rumi Press
+## 🏢 Project Scenario: VQuiz
 
-**Rumi Press** is transitioning from spreadsheet-based tracking to a web-based application for book distribution. Book categories include:
+**VQuiz** is a Vietnamese quiz application intended for students and learners who want to practice language, history, and general knowledge. Quiz categories include:
 
-- Business Analytics
-- Python
-- Data Science
-- Math
-- And more...
+- Vietnamese Vocabulary  
+- Grammar  
+- History & Culture  
+- Math & Logic  
 
-They needed a secure, accessible, and automated solution to streamline their operations.
+Users needed a **secure, efficient, and user-friendly solution** to take quizzes, track scores, and review their performance.
 
 ---
 
 ## 🎯 Project Objectives
 
-- Track book distribution **expenses**
-- Increase **data security** and **availability**
-- Customize and automate **business processes**
+- Enable users to **take quizzes and track scores**  
+- Maintain **organized question banks** by category  
+- Support **data import/export** for easy question management  
+- Provide **summary reports** of user performance  
 
 ---
 
@@ -86,10 +86,10 @@ They needed a secure, accessible, and automated solution to streamline their ope
 
 I implemented the following features:
 
-- ✅ **CRUD** views for managing book categories  
-- ✅ **CRUD** views to manage book details (title, author, publish date, category, distribution expenses)  
-- ✅ **Data import** from spreadsheets  
-- ✅ **Report view** for expenses summarized by book category
+- ✅ **CRUD operations** for managing quiz categories  
+- ✅ **CRUD operations** for managing quiz questions (question text, options, correct answer, category)  
+- ✅ **Data import/export** from CSV/JSON  
+- ✅ **Score tracking** and reporting for individual users  
 
 > _CRUD = Create, Read, Update, Delete_
 
@@ -97,38 +97,41 @@ I implemented the following features:
 
 ## 📈 Reporting Functionality
 
-I built a reporting interface where team members can view a summary of **distribution expenses** by category. The charts and visualizations are easy to interpret and support informed decision-making.
+I built a reporting feature where users and admins can view:
+
+- Quiz scores and average performance per category  
+- High scores leaderboard  
+- Simple charts or textual summaries for quick interpretation  
 
 ---
 
 ## 📋 Project Evaluation Criteria
 
 | **Category**     | **Satisfactory** | **Somewhat Satisfactory** | **Unsatisfactory** |
-|------------------|------------------|----------------------------|---------------------|
-| **Functionality** | Complete CRUD, accurate reports, clear guidance | Partial features or unclear reports | System incomplete or not functional |
-| **Usability**     | Intuitive forms, placeholder text, field validation | Basic usability but lacking guidance | Difficult to navigate or understand |
-| **Aesthetics**    | Visually consistent, readable text, aligned elements | Slight misalignment, uncomfortable visuals | Poor layout, unreadable text |
-| **Reliability**   | No crashes, handles errors gracefully | Minor errors, confusing feedback | Frequent crashes, no error handling |
+|------------------|-----------------|----------------------------|------------------|
+| **Functionality** | Full CRUD for categories/questions, accurate score tracking | Partial features or incomplete reporting | System incomplete or non-functional |
+| **Usability**     | Clear interface, intuitive navigation, responsive prompts | Basic usability but confusing in places | Hard to use or navigate |
+| **Reliability**   | No crashes, handles errors gracefully | Minor bugs or inconsistent feedback | Frequent crashes or unhandled exceptions |
+| **Code Quality**  | Well-structured OOP, modular classes, readable code | Some poor structure, limited modularity | Spaghetti code, hard to maintain |
 
 ---
 
 ## ✅ Final Checklist
 
-- [x] Fully operational website
-- [x] Users can add, view, update, and delete book information
-- [x] Reports are accurate and visually clear
-- [x] Spreadsheet data successfully migrated
-- [x] Admin interface and user experience are intuitive
+- [x] Fully functional quiz application in Java  
+- [x] Users can add, view, update, and delete quiz questions and categories  
+- [x] Score tracking and performance reporting implemented  
+- [x] Question bank import/export works correctly  
+- [x] Code is modular, readable, and maintainable  
 
 ---
 
 ## 💬 Summary
 
-This project helped me apply my Django knowledge to solve a realistic business problem. I not only practiced key software engineering skills but also learned to think like a product developer by addressing usability, security, and reporting needs.
+This project helped me apply Java programming and software engineering skills to build a realistic educational application. I practiced **OOP design, file handling, CRUD operations, and reporting**, while thinking like a product developer to ensure usability, scalability, and performance.
 
 ---
 
 ## 🔗 Want to Learn More?
 
-If you're a developer, recruiter, or educator interested in the code, feel free to explore the repository or reach out with questions.
-
+If you’re a developer, recruiter, or educator interested in the code, feel free to explore the repository or reach out with questions.
