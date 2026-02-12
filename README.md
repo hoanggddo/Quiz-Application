@@ -6,12 +6,6 @@ This project simulates a real-world software development scenario for building a
 
 ---
 
-## ⏳ Estimated Time
-
-🕒 Approximately **4–6 hours** to complete
-
----
-
 ## 🧠 Skills Demonstrated
 
 - Developing **object-oriented models** in Java  
