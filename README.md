@@ -27,23 +27,6 @@ By the end of this experience, I delivered a Java project with:
 
 ---
 
-## 🗂 How to Navigate This Project
-
-This project was developed in 4 phases:
-
-1. **Project Scenario**  
-   Understand the requirements of an educational quiz application
-
-2. **Build the Project**  
-   Design Java classes, CRUD operations, score tracking, and reporting features
-
-3. **Showcase to Employers**  
-   Document outcomes and provide a working demo
-
-4. **Add to Portfolio**  
-   Present a polished, functional solution suitable for software engineering internships  
-
----
 
 ## 🧩 What Makes This Project Unique
 
@@ -61,7 +44,7 @@ This project was developed in 4 phases:
 - Vietnamese Vocabulary  
 - Grammar  
 - History & Culture  
-- Math & Logic  
+
 
 Users needed a **secure, efficient, and user-friendly solution** to take quizzes, track scores, and review their performance.
 
