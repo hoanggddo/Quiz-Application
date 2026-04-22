@@ -3,7 +3,7 @@ import javax.swing.*;
 
 public class DifficultyManager {
     public enum Difficulty {
-        EASY, MEDIUM, HARDs
+        EASY, MEDIUM, HARD
     }
 
     public static Difficulty chooseDifficulty() {
