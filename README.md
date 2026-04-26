@@ -1,6 +1,6 @@
 # 📚 Vietnamese Quiz Application – VQuiz
 
-## 🔍 Overviewe
+## 🔍 Overview
 
 This project simulates a real-world software development scenario for building an educational quiz application in Java. As an intermediate software developer, I built a Java-based application that allows users to take Vietnamese quizzes, track scores, and manage question banks efficiently.
 
