@@ -1,0 +1,2 @@
+Main-Class: VietnameseQuizApp
+Class-Path: lib/freetts.jar lib/cmulex.jar lib/en_us.jar lib/cmu_time_awb.jar
