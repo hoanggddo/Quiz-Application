@@ -1,12 +1,12 @@
-# 📚 Vietnamese Quiz Application – VQuiz
+#  Vietnamese Quiz Application – VQuiz
 
-## 🔍 Overview
+##  Overview
 
 This project simulates a real-world software development scenario for building an educational quiz application in Java. As an intermediate software developer, I built a Java-based application that allows users to take Vietnamese quizzes, track scores, and manage question banks efficiently.
 
 ---
 
-## 🧠 Skills Demonstrated
+##  Skills Demonstrated
 
 - Developing **object-oriented models** in Java  
 - Creating **CRUD operations** for quiz questions and categories  
@@ -16,7 +16,7 @@ This project simulates a real-world software development scenario for building a
 
 ---
 
-## 🛠 What I Built
+##  What I Built
 
 By the end of this experience, I delivered a Java project with:
 
@@ -28,7 +28,7 @@ By the end of this experience, I delivered a Java project with:
 ---
 
 
-## 🧩 What Makes This Project Unique
+##  What Makes This Project Unique
 
 - The project has **flexible design**, allowing new question types or categories  
 - Simulates a realistic educational application workflow  
@@ -37,7 +37,7 @@ By the end of this experience, I delivered a Java project with:
 
 ---
 
-## 🏢 Project Scenario: VQuiz
+##  Project Scenario: VQuiz
 
 **VQuiz** is a Vietnamese quiz application intended for students and learners who want to practice language, history, and general knowledge. Quiz categories include:
 
@@ -50,7 +50,7 @@ Users needed a **secure, efficient, and user-friendly solution** to take quizzes
 
 ---
 
-## 🎯 Project Objectives
+##  Project Objectives
 
 - Enable users to **take quizzes and track scores**  
 - Maintain **organized question banks** by category  
@@ -59,7 +59,7 @@ Users needed a **secure, efficient, and user-friendly solution** to take quizzes
 
 ---
 
-## 🧪 My Task
+## My Task
 
 I implemented the following features:
 
@@ -72,7 +72,7 @@ I implemented the following features:
 
 ---
 
-## 📈 Reporting Functionality
+##  Reporting Functionality
 
 I built a reporting feature where users and admins can view:
 
@@ -82,7 +82,7 @@ I built a reporting feature where users and admins can view:
 
 ---
 
-## 📋 Project Evaluation Criteria
+##  Project Evaluation Criteria
 
 | **Category**     | **Satisfactory** | **Somewhat Satisfactory** | **Unsatisfactory** |
 |------------------|-----------------|----------------------------|------------------|
@@ -93,7 +93,7 @@ I built a reporting feature where users and admins can view:
 
 ---
 
-## ✅ Final Checklist
+##  Final Checklist
 
 - [x] Fully functional quiz application in Java  
 - [x] Users can add, view, update, and delete quiz questions and categories  
@@ -103,7 +103,7 @@ I built a reporting feature where users and admins can view:
 
 ---
 
-## 💬 Summary
+##  Summary
 
 This project helped me apply Java programming and software engineering skills to build a realistic educational application. I practiced **OOP design, file handling, CRUD operations, and reporting**, while thinking like a product developer to ensure usability, scalability, and performance.
 
