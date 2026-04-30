@@ -63,10 +63,10 @@ Users needed a **secure, efficient, and user-friendly solution** to take quizzes
 
 I implemented the following features:
 
-- ✅ **CRUD operations** for managing quiz categories  
-- ✅ **CRUD operations** for managing quiz questions (question text, options, correct answer, category)  
-- ✅ **Data import/export** from CSV/JSON  
-- ✅ **Score tracking** and reporting for individual users  
+-  **CRUD operations** for managing quiz categories  
+-  **CRUD operations** for managing quiz questions (question text, options, correct answer, category)  
+-  **Data import/export** from CSV/JSON  
+-  **Score tracking** and reporting for individual users  
 
 > _CRUD = Create, Read, Update, Delete_
 
@@ -91,15 +91,6 @@ I built a reporting feature where users and admins can view:
 | **Reliability**   | No crashes, handles errors gracefully | Minor bugs or inconsistent feedback | Frequent crashes or unhandled exceptions |
 | **Code Quality**  | Well-structured OOP, modular classes, readable code | Some poor structure, limited modularity | Spaghetti code, hard to maintain |
 
----
-
-##  Final Checklist
-
-- [x] Fully functional quiz application in Java  
-- [x] Users can add, view, update, and delete quiz questions and categories  
-- [x] Score tracking and performance reporting implemented  
-- [x] Question bank import/export works correctly  
-- [x] Code is modular, readable, and maintainable  
 
 ---
 
