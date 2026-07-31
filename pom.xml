@@ -70,6 +70,13 @@
             <plugin>
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <!-- DesktopApp (embedded server + Swing UI) is the default
+                         packaged entry point, since that's what an end user
+                         actually runs. For API-only development, override with:
+                         mvn spring-boot:run -Dspring-boot.run.main-class=com.hoangdo.quizapp.QuizApplication -->
+                    <mainClass>com.hoangdo.quizapp.DesktopApp</mainClass>
+                </configuration>
             </plugin>
         </plugins>
     </build>

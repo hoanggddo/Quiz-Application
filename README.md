@@ -94,11 +94,65 @@ database-agnostic. To move to PostgreSQL:
    `application.properties`
 3. No changes needed to any entity, repository, service, or controller code
 
-## Related: Desktop Client
+## Two Ways to Run This
 
-The original Swing desktop UI has been reconnected to call this API
-instead of reading local files — see [`swing-client/README.md`](./swing-client/README.md)
-for how it works and how to run both pieces together.
+**1. Combined desktop app (default)** — one process, one window, this is
+what an end user runs:
+
+```bash
+mvn clean package
+java -jar target/quiz-application-api-1.0.0.jar
+```
+
+This starts the embedded API server in the background and opens the
+Swing UI automatically. No terminal commands to explain to anyone, no
+separate server to start first.
+
+**2. API only** (for development, testing with curl/Postman, or demoing
+the backend architecture on its own — no Swing window opens):
+
+```bash
+mvn spring-boot:run -Dspring-boot.run.main-class=com.hoangdo.quizapp.QuizApplication
+```
+
+## Building a Standalone Installer (no Java installation required)
+
+`jpackage` (bundled with the JDK since Java 14) can wrap the packaged jar
+and a private Java runtime into a native installer, so an end user with
+no Java installed at all can just download and run it.
+
+```bash
+mvn clean package
+
+jpackage \
+  --input target \
+  --main-jar quiz-application-api-1.0.0.jar \
+  --name "Vietnamese Quiz" \
+  --type exe \
+  --win-shortcut \
+  --win-menu
+```
+
+Note this deliberately omits `--main-class` — the jar's manifest already
+points to `DesktopApp` via the Maven plugin config in `pom.xml`, and
+Spring Boot's repackaged jars use their own internal loader for nested
+dependencies, so overriding the main class at the `jpackage` step instead
+of at build time does not work correctly.
+
+This produces a `Vietnamese Quiz-1.0.0.exe` installer. Running it installs
+the app with a bundled Java runtime and adds a Start Menu / desktop
+shortcut.
+
+(On macOS: use `--type dmg` or `--type pkg` instead of `--type exe`.
+`jpackage` must be run on the same OS you're targeting.)
+
+**Honesty note:** I have not been able to actually run `jpackage` against
+this project — no JDK/jpackage available in the environment I built this
+in. The Maven configuration above follows Spring Boot's documented
+packaging behavior, but treat the `jpackage` step specifically as
+untested. If it fails, the fallback is distributing the plain jar from
+step 1 with a one-line instruction: "install Java, then run
+`java -jar quiz-application-api-1.0.0.jar`."
 
 ## What I'd Add Next
 
