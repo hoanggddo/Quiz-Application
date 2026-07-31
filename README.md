@@ -94,6 +94,12 @@ database-agnostic. To move to PostgreSQL:
    `application.properties`
 3. No changes needed to any entity, repository, service, or controller code
 
+## Related: Desktop Client
+
+The original Swing desktop UI has been reconnected to call this API
+instead of reading local files — see [`swing-client/README.md`](./swing-client/README.md)
+for how it works and how to run both pieces together.
+
 ## What I'd Add Next
 
 - JWT-based session tokens instead of stateless login (currently each
