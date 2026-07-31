@@ -1,105 +1,105 @@
-#  Vietnamese Quiz Application – VQuiz
+# Quiz Application API
 
-##  Overview
+A REST API backend for the Vietnamese Quiz Application, rebuilt from the
+original Java Swing desktop app into a Spring Boot service with a proper
+layered architecture and relational persistence.
 
-This project simulates a real-world software development scenario for building an educational quiz application in Java. As an intermediate software developer, I built a Java-based application that allows users to take Vietnamese quizzes, track scores, and manage question banks efficiently.
+## Why This Exists
 
----
+The original version stored users in a plaintext `.txt` file and ran as a
+single-user Swing desktop app. This version follows the architecture pattern
+used across backend roles at DMV-area employers (defense contractors,
+consulting firms, and financial tech companies): a layered Spring Boot
+service backed by a relational database, with password hashing, input
+validation, and automated tests.
 
-##  Skills Demonstrated
+## Architecture
 
-- Developing **object-oriented models** in Java  
-- Creating **CRUD operations** for quiz questions and categories  
-- Implementing **score tracking and reporting**  
-- Reading and writing data from **CSV or JSON files**  
-- Using **Git** for version control and collaboration  
+```
+controller/   -> REST endpoints (HTTP concerns only)
+service/      -> business logic
+repository/   -> Spring Data JPA interfaces (no hand-written SQL)
+model/        -> JPA entities (users, questions, scores)
+dto/          -> request/response shapes (entities are never exposed directly)
+config/       -> BCryptPasswordEncoder bean
+exception/    -> centralized error handling
+```
 
----
- 
-##  What I Built
+## Tech Stack
 
-By the end of this experience, I delivered a Java project with:
+- Java 17
+- Spring Boot 3 (Web, Data JPA, Validation)
+- H2 (file-based relational database for local/dev use)
+- Spring Security Crypto (BCrypt password hashing)
+- JUnit 5 + Mockito + AssertJ
+- Maven
+- Docker
 
-- Functional CRUD operations for managing quiz categories and questions  
-- Score tracking for users after each quiz attempt  
-- Import capabilities for question banks from CSV or JSON files  
-- Simple reporting to show user performance and high scores  
+## Running Locally
 
----
+```bash
+mvn clean install
+mvn spring-boot:run
+```
 
+The API starts on `http://localhost:8080`. The H2 console is available at
+`http://localhost:8080/h2-console` (JDBC URL: `jdbc:h2:file:./data/quizdb`)
+for inspecting the database during development.
 
-##  What Makes This Project Unique
+## Running Tests
 
-- The project has **flexible design**, allowing new question types or categories  
-- Simulates a realistic educational application workflow  
-- Encourages clean **object-oriented programming** and file/database handling  
-- Designed to showcase both **technical execution** and **problem-solving skills**  
+```bash
+mvn test
+```
 
----
+## Running with Docker
 
-##  Project Scenario: VQuiz
+```bash
+docker build -t quiz-application-api .
+docker run -p 8080:8080 quiz-application-api
+```
 
-**VQuiz** is a Vietnamese quiz application intended for students and learners who want to practice language, history, and general knowledge. Quiz categories include:
+## API Endpoints
 
-- Vietnamese Vocabulary  
-- Grammar  
-- History & Culture  
+| Method | Endpoint                       | Description                          |
+|--------|---------------------------------|---------------------------------------|
+| POST   | `/api/auth/register`           | Create a new account                  |
+| POST   | `/api/auth/login`               | Log in with username/password         |
+| GET    | `/api/questions?category=X`     | Fetch questions for a category        |
+| POST   | `/api/questions/{id}/answer`    | Submit an answer, graded server-side  |
+| POST   | `/api/leaderboard`               | Submit a quiz score                   |
+| GET    | `/api/leaderboard`                | Get the top 10 scores                 |
 
+### Example: Register
 
-Users needed a **secure, efficient, and user-friendly solution** to take quizzes, track scores, and review their performance.
+```bash
+curl -X POST http://localhost:8080/api/auth/register \
+  -H "Content-Type: application/json" \
+  -d '{"username": "hoang", "password": "correcthorsebattery"}'
+```
 
----
+### Example: Fetch questions
 
-##  Project Objectives
+```bash
+curl "http://localhost:8080/api/questions?category=Vocabulary"
+```
 
-- Enable users to **take quizzes and track scores**  
-- Maintain **organized question banks** by category  
-- Support **data import/export** for easy question management  
-- Provide **summary reports** of user performance  
+## Migrating to PostgreSQL/MySQL for Production
 
----
+This project uses H2 for simplicity, but the entity/repository layer is
+database-agnostic. To move to PostgreSQL:
 
-## My Task
+1. Replace the H2 dependency in `pom.xml` with `org.postgresql:postgresql`
+2. Update `spring.datasource.url`, username, and password in
+   `application.properties`
+3. No changes needed to any entity, repository, service, or controller code
 
-I implemented the following features:
+## What I'd Add Next
 
--  **CRUD operations** for managing quiz categories  
--  **CRUD operations** for managing quiz questions (question text, options, correct answer, category)  
--  **Data import/export** from CSV/JSON  
--  **Score tracking** and reporting for individual users  
-
-> _CRUD = Create, Read, Update, Delete_
-
----
-
-##  Reporting Functionality
-
-I built a reporting feature where users and admins can view:
-
-- Quiz scores and average performance per category  
-- High scores leaderboard  
-- Simple charts or textual summaries for quick interpretation  
-
----
-
-##  Project Evaluation Criteria
-
-| **Category**     | **Satisfactory** | **Somewhat Satisfactory** | **Unsatisfactory** |
-|------------------|-----------------|----------------------------|------------------|
-| **Functionality** | Full CRUD for categories/questions, accurate score tracking | Partial features or incomplete reporting | System incomplete or non-functional |
-| **Usability**     | Clear interface, intuitive navigation, responsive prompts | Basic usability but confusing in places | Hard to use or navigate |
-| **Reliability**   | No crashes, handles errors gracefully | Minor bugs or inconsistent feedback | Frequent crashes or unhandled exceptions |
-| **Code Quality**  | Well-structured OOP, modular classes, readable code | Some poor structure, limited modularity | Spaghetti code, hard to maintain |
-
-
----
-
-##  Summary
-
-This project helped me apply Java programming and software engineering skills to build a realistic educational application. I practiced **OOP design, file handling, CRUD operations, and reporting**, while thinking like a product developer to ensure usability, scalability, and performance.
-
----
-
-## 🔗 Want to Learn More?
-
-If you’re a developer, recruiter, or educator interested in the code, feel free to explore the repository or reach out with questions.
+- JWT-based session tokens instead of stateless login (currently each
+  request is independent; a real deployment would issue a token on login
+  and require it on subsequent requests)
+- Rate limiting on `/api/auth/login` to slow down brute-force attempts
+- Migrate the original Swing app's full question bank into `data.sql`
+- Integration tests using `@SpringBootTest` and Testcontainers, in addition
+  to the current unit tests
