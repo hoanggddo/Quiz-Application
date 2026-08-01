@@ -22,6 +22,12 @@ import javax.swing.*;
 public class DesktopApp {
 
     public static void main(String[] args) {
+        // Belt-and-suspenders alongside spring.main.headless=false in
+        // application.properties -- set this directly before Spring Boot
+        // even starts, since java.awt.headless must be false before any
+        // AWT/Swing class is touched.
+        System.setProperty("java.awt.headless", "false");
+
         // Starts the embedded Tomcat server + all REST controllers in the
         // background. This call returns once the server is up; it does
         // not block the rest of main() the way running `mvn spring-boot:run`
