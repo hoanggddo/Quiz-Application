@@ -117,10 +117,12 @@ public class QuizClientApp extends JFrame implements ActionListener {
 
     public void actionPerformed(ActionEvent e) {
         if (e.getSource() == hintBtn) {
-            // The API doesn't currently return a per-question hint field.
-            // Placeholder message; add a "hint" column to the Question
-            // entity/QuestionResponse DTO if you want real hints back.
-            JOptionPane.showMessageDialog(this, "No hint available for this question yet.");
+            String hint = questions.get(current).hint();
+            if (hint == null || hint.isBlank()) {
+                JOptionPane.showMessageDialog(this, "No hint available for this question.");
+            } else {
+                JOptionPane.showMessageDialog(this, hint, "Hint", JOptionPane.INFORMATION_MESSAGE);
+            }
         }
 
         if (e.getSource() == nextBtn) {

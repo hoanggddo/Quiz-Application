@@ -75,7 +75,8 @@ public class ApiClient {
                         node.get("optionA").asText(),
                         node.get("optionB").asText(),
                         node.get("optionC").asText(),
-                        node.get("optionD").asText()
+                        node.get("optionD").asText(),
+                        node.hasNonNull("hint") ? node.get("hint").asText() : null
                 ));
             }
         }
@@ -162,7 +163,8 @@ public class ApiClient {
     /** Client-side view of a question. Deliberately has no "correct answer" field. */
     public record ClientQuestion(
             Long id, String category, String questionText,
-            String optionA, String optionB, String optionC, String optionD
+            String optionA, String optionB, String optionC, String optionD,
+            String hint
     ) {
         public String[] optionsArray() {
             return new String[]{optionA, optionB, optionC, optionD};

@@ -33,11 +33,14 @@ public class Question {
     @Column(nullable = false)
     private String correctOption;
 
+    @Column(length = 500)
+    private String hint;
+
     public Question() {
     }
 
     public Question(String category, String questionText, String optionA, String optionB,
-                     String optionC, String optionD, String correctOption) {
+                     String optionC, String optionD, String correctOption, String hint) {
         this.category = category;
         this.questionText = questionText;
         this.optionA = optionA;
@@ -45,6 +48,7 @@ public class Question {
         this.optionC = optionC;
         this.optionD = optionD;
         this.correctOption = correctOption;
+        this.hint = hint;
     }
 
     public Long getId() {
@@ -77,5 +81,9 @@ public class Question {
 
     public String getCorrectOption() {
         return correctOption;
+    }
+
+    public String getHint() {
+        return hint;
     }
 }

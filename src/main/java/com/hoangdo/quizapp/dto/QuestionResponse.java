@@ -4,7 +4,8 @@ import com.hoangdo.quizapp.model.Question;
 
 /**
  * Client-facing view of a Question. Deliberately excludes correctOption --
- * the API should never hand the answer key to the quiz-taker.
+ * the API should never hand the answer key to the quiz-taker. hint IS
+ * included -- it's meant to help the user, unlike the answer itself.
  */
 public class QuestionResponse {
 
@@ -15,6 +16,7 @@ public class QuestionResponse {
     private String optionB;
     private String optionC;
     private String optionD;
+    private String hint;
 
     public static QuestionResponse fromEntity(Question q) {
         QuestionResponse r = new QuestionResponse();
@@ -25,6 +27,7 @@ public class QuestionResponse {
         r.optionB = q.getOptionB();
         r.optionC = q.getOptionC();
         r.optionD = q.getOptionD();
+        r.hint = q.getHint();
         return r;
     }
 
@@ -54,5 +57,9 @@ public class QuestionResponse {
 
     public String getOptionD() {
         return optionD;
+    }
+
+    public String getHint() {
+        return hint;
     }
 }
