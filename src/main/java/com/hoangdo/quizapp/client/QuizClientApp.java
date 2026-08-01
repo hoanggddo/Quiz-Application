@@ -153,21 +153,38 @@ public class QuizClientApp extends JFrame implements ActionListener {
     }
 
     private void handleAnswerAndAdvance() {
-        boolean correct = checkAnswerWithServer();
-
-        if (correct) {
-            score++;
-            JOptionPane.showMessageDialog(this, "Correct!");
-        } else {
-            JOptionPane.showMessageDialog(this, "Incorrect.");
+        // Guard against duplicate/late clicks (e.g. clicking Next multiple
+        // times while a previous click's network call was still in
+        // flight) from advancing current past the end of the list.
+        if (current >= questions.size()) {
+            return;
         }
 
-        current++;
-        if (current == questions.size()) {
-            nextBtn.setVisible(false);
-            submitBtn.setVisible(true);
-        } else {
-            set();
+        // Disable both buttons for the duration of the network call, so a
+        // second click can't queue up another call before this one finishes.
+        nextBtn.setEnabled(false);
+        submitBtn.setEnabled(false);
+
+        try {
+            boolean correct = checkAnswerWithServer();
+
+            if (correct) {
+                score++;
+                JOptionPane.showMessageDialog(this, "Correct!");
+            } else {
+                JOptionPane.showMessageDialog(this, "Incorrect.");
+            }
+
+            current++;
+            if (current == questions.size()) {
+                nextBtn.setVisible(false);
+                submitBtn.setVisible(true);
+            } else {
+                set();
+            }
+        } finally {
+            nextBtn.setEnabled(true);
+            submitBtn.setEnabled(true);
         }
     }
 
