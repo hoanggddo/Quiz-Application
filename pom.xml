@@ -49,13 +49,21 @@
             <artifactId>spring-security-crypto</artifactId>
         </dependency>
 
-        <!-- H2: file-based relational database for local/dev use.
-             Swappable for PostgreSQL/MySQL in production by changing
-             the driver dependency and application.properties only —
-             the JPA entities/repositories don't change. -->
+        <!-- H2: file-based relational database for local/solo use.
+             PostgreSQL below is used instead when deployed to a shared
+             server -- the JPA entities/repositories don't change either way. -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
+            <scope>runtime</scope>
+        </dependency>
+
+        <!-- PostgreSQL: used when this API is deployed centrally so
+             multiple users share one real database (see README's
+             "Deploying a Shared Server" section). -->
+        <dependency>
+            <groupId>org.postgresql</groupId>
+            <artifactId>postgresql</artifactId>
             <scope>runtime</scope>
         </dependency>
 
