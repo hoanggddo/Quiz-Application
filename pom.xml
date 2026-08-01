@@ -51,7 +51,7 @@
 
         <!-- H2: file-based relational database for local/solo use.
              PostgreSQL below is used instead when deployed to a shared
-             server -- the JPA entities/repositories don't change either way. -->
+             server, the JPA entities/repositories don't change either way. -->
         <dependency>
             <groupId>com.h2database</groupId>
             <artifactId>h2</artifactId>
