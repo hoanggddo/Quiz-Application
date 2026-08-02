@@ -31,6 +31,9 @@ import javax.swing.*;
  */
 public class DesktopApp {
 
+    private static ApiClient apiClient;
+    private static ConfigurableApplicationContext context;
+
     public static void main(String[] args) {
         // Belt-and-suspenders alongside spring.main.headless=false in
         // application.properties -- set this directly before Spring Boot
@@ -40,9 +43,6 @@ public class DesktopApp {
 
         String remoteUrl = System.getProperty("quiz.server.url", System.getenv("QUIZ_SERVER_URL"));
         boolean useRemoteServer = remoteUrl != null && !remoteUrl.isBlank();
-
-        ConfigurableApplicationContext context = null;
-        ApiClient apiClient;
 
         if (useRemoteServer) {
             // Shared mode: connect to the already-running central server.
@@ -56,25 +56,42 @@ public class DesktopApp {
             apiClient = new ApiClient("http://localhost:8080");
         }
 
-        final ConfigurableApplicationContext finalContext = context;
+        SwingUtilities.invokeLater(DesktopApp::runLoginFlow);
+    }
 
-        SwingUtilities.invokeLater(() -> {
-            LoginManager loginManager = new LoginManager(apiClient);
-            String username = loginManager.login();
+    /** Shows the login screen. On success, moves to the category menu for that user. */
+    private static void runLoginFlow() {
+        LoginManager loginManager = new LoginManager(apiClient);
+        String username = loginManager.login();
 
-            if (username == null) {
-                if (finalContext != null) {
-                    finalContext.close();
-                }
-                System.exit(0);
-                return;
+        if (username == null) {
+            // User chose Exit (or closed the login dialog) -- this is the
+            // only path that actually ends the whole application.
+            if (context != null) {
+                context.close();
             }
+            System.exit(0);
+            return;
+        }
 
-            String category = CategoryManager.chooseCategory();
-            new QuizClientApp(apiClient, username, category);
-            // QuizClientApp's window uses EXIT_ON_CLOSE. In solo mode this
-            // also shuts down the embedded server since it's the same
-            // process; in remote mode it just closes the window.
-        });
+        runMenuFlow(username);
+    }
+
+    /**
+     * Shows category selection for the given user, then opens the quiz
+     * window. Submit/Reset in that window call back into this same
+     * method (pick another category, same user); Log Out calls back into
+     * runLoginFlow() instead (a different or the same user can sign in
+     * again).
+     */
+    private static void runMenuFlow(String username) {
+        String category = CategoryManager.chooseCategory();
+        new QuizClientApp(
+                apiClient,
+                username,
+                category,
+                () -> runMenuFlow(username),   // onBackToMenu
+                DesktopApp::runLoginFlow       // onLogout
+        );
     }
 }

@@ -7,27 +7,37 @@ import java.util.List;
 
 /**
  * Adapted from the original VietnameseQuizApp. Same overall layout and
- * button flow as the original Swing app. What changed underneath:
+ * button flow as the original Swing app, with navigation now driven by
+ * callbacks instead of System.exit():
  *
+ *  - Submit: saves the score, then returns to category selection
+ *    (does NOT close the whole app).
+ *  - Reset: abandons the current attempt (no score saved) and returns
+ *    to category selection.
+ *  - Log Out: returns all the way to the login screen, so a different
+ *    user (or the same one again) can sign in.
+ *
+ * DesktopApp owns the actual navigation loop; this class only calls the
+ * two Runnable callbacks it's given and otherwise knows nothing about
+ * what happens next.
+ *
+ * Other changes from the original app:
  *  - Questions are fetched from the API (by category) instead of being
  *    hardcoded in loadQuestions().
  *  - Answers are graded server-side via ApiClient.submitAnswer(), since
  *    the client is never given the correct answer up front.
- *  - Scores are submitted to the API's leaderboard instead of a local
- *    leaderboard.txt file.
- *  - Text-to-speech and per-question images are removed. The original
- *    app used the FreeTTS library (removed as vendored clutter during
- *    the backend rebuild) and local image files tied to hardcoded
- *    questions (the API's Question model has no image field). Both
- *    could be added back deliberately later if wanted.
+ *  - Text-to-speech and per-question images are removed (see
+ *    swing-client history in git log / earlier README notes).
  */
 public class QuizClientApp extends JFrame implements ActionListener {
 
     private final ApiClient apiClient;
+    private final Runnable onBackToMenu;
+    private final Runnable onLogout;
 
     JRadioButton[] radiobutton = new JRadioButton[4];
     JLabel questionLabel, title;
-    JButton nextBtn, submitBtn, resetBtn, hintBtn, historyBtn;
+    JButton nextBtn, submitBtn, resetBtn, hintBtn, historyBtn, logoutBtn;
 
     int current = 0;
     int score = 0;
@@ -36,13 +46,20 @@ public class QuizClientApp extends JFrame implements ActionListener {
     String username;
     String category;
 
-    public QuizClientApp(ApiClient apiClient, String username, String category) {
+    public QuizClientApp(ApiClient apiClient, String username, String category,
+                          Runnable onBackToMenu, Runnable onLogout) {
         this.apiClient = apiClient;
         this.username = username;
         this.category = category;
+        this.onBackToMenu = onBackToMenu;
+        this.onLogout = onLogout;
 
         setTitle("Vietnamese Quiz");
         setSize(1000, 700);
+        // Closing via the window's own X button still exits the whole
+        // app (this is the only path that does). Submit/Reset/Log Out
+        // all use dispose() directly instead, which does NOT trigger
+        // this and lets DesktopApp's loop continue.
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLayout(null);
         setLocationRelativeTo(null);
@@ -65,6 +82,7 @@ public class QuizClientApp extends JFrame implements ActionListener {
             bg.add(radiobutton[i]);
         }
 
+        // Row 1: quiz-progress actions
         nextBtn = new JButton("Next");
         nextBtn.setBounds(100, 400, 120, 40);
         nextBtn.addActionListener(this);
@@ -81,18 +99,27 @@ public class QuizClientApp extends JFrame implements ActionListener {
         resetBtn.addActionListener(this);
         add(resetBtn);
 
+        // Row 2: secondary actions
         hintBtn = new JButton("Hint");
-        hintBtn.setBounds(550, 400, 120, 40);
+        hintBtn.setBounds(100, 460, 120, 40);
         hintBtn.addActionListener(this);
         add(hintBtn);
 
         historyBtn = new JButton("View Leaderboard");
-        historyBtn.setBounds(700, 400, 180, 40);
+        historyBtn.setBounds(250, 460, 180, 40);
         historyBtn.addActionListener(this);
         add(historyBtn);
 
+        logoutBtn = new JButton("Log Out");
+        logoutBtn.setBounds(450, 460, 120, 40);
+        logoutBtn.addActionListener(this);
+        add(logoutBtn);
+
         if (!loadQuestions()) {
             dispose();
+            if (onBackToMenu != null) {
+                onBackToMenu.run();
+            }
             return;
         }
         set();
@@ -133,15 +160,21 @@ public class QuizClientApp extends JFrame implements ActionListener {
             handleAnswerAndAdvance();
             JOptionPane.showMessageDialog(this, "You scored: " + score + "/" + questions.size());
             saveScore();
-            System.exit(0);
+            returnToMenu();
         }
 
         if (e.getSource() == resetBtn) {
-            current = 0;
-            score = 0;
-            nextBtn.setVisible(true);
-            submitBtn.setVisible(false);
-            set();
+            // Abandons the current attempt (no score saved) and goes
+            // back to category selection, rather than restarting the
+            // same category in place.
+            returnToMenu();
+        }
+
+        if (e.getSource() == logoutBtn) {
+            dispose();
+            if (onLogout != null) {
+                onLogout.run();
+            }
         }
 
         if (e.getSource() == historyBtn) {
@@ -151,6 +184,13 @@ public class QuizClientApp extends JFrame implements ActionListener {
             } catch (Exception ex) {
                 JOptionPane.showMessageDialog(this, "Could not load leaderboard: " + ex.getMessage());
             }
+        }
+    }
+
+    private void returnToMenu() {
+        dispose();
+        if (onBackToMenu != null) {
+            onBackToMenu.run();
         }
     }
 
@@ -234,18 +274,5 @@ public class QuizClientApp extends JFrame implements ActionListener {
             radiobutton[i].setText(options[i]);
             radiobutton[i].setVisible(true);
         }
-    }
-
-    public static void main(String[] args) {
-        ApiClient apiClient = new ApiClient(); // defaults to http://localhost:8080
-
-        LoginManager loginManager = new LoginManager(apiClient);
-        String username = loginManager.login();
-        if (username == null) {
-            System.exit(0);
-        }
-
-        String category = CategoryManager.chooseCategory();
-        new QuizClientApp(apiClient, username, category);
     }
 }
