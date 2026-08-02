@@ -87,77 +87,6 @@ curl -X POST http://localhost:8080/api/auth/register \
 curl "http://localhost:8080/api/questions?category=Vocabulary"
 ```
 
-## Deploying a Shared Server (so multiple people share one leaderboard)
-
-By default, every person who runs this app gets their own private local
-database -- accounts and scores don't carry over between machines. To
-make it a real shared experience, deploy the API once to a hosting
-platform, and point every client at that one server instead.
-
-These steps use **Render** (free tier covers both the web service and a
-Postgres database, and it deploys directly from your GitHub repo).
-
-**1. Push this repo to GitHub** if you haven't already (see earlier
-instructions in this conversation for the git commands).
-
-**2. Create a free Postgres database on Render:**
-- Go to https://dashboard.render.com → **New** → **PostgreSQL**
-- Give it a name (e.g. `quiz-app-db`), choose the free plan, create it
-- Once it's ready, open it and note down: **Hostname**, **Port**,
-  **Database**, **Username**, **Password** (shown on the database's page)
-
-**3. Create a web service for the API:**
-- **New** → **Web Service** → connect your GitHub repo
-- **Runtime**: Docker (it will use the `Dockerfile` already in this repo)
-- **Instance type**: Free
-
-**4. Set these environment variables on the web service** (Render's
-dashboard → your service → **Environment**):
-
-| Key | Value |
-|---|---|
-| `SPRING_DATASOURCE_URL` | `jdbc:postgresql://<Hostname>:<Port>/<Database>` (build this from step 2's values) |
-| `SPRING_DATASOURCE_USERNAME` | the Username from step 2 |
-| `SPRING_DATASOURCE_PASSWORD` | the Password from step 2 |
-| `SPRING_DATASOURCE_DRIVER_CLASS_NAME` | `org.postgresql.Driver` |
-| `SPRING_H2_CONSOLE_ENABLED` | `false` |
-
-**5. Deploy.** Render will build the Docker image and start it. Once
-live, your API is reachable at something like
-`https://quiz-application-api.onrender.com`.
-
-**6. Verify it's actually working** before connecting any client:
-```
-curl https://your-app-name.onrender.com/api/leaderboard
-```
-Should return `[]` (empty leaderboard, not an error).
-
-**Two things to expect on Render's free tier:**
-- The service **sleeps after ~15 minutes of no traffic**, and the first
-  request after that takes 30-60 seconds to wake it back up. This isn't
-  a bug -- it's the free tier's tradeoff.
-- The database has a **row/storage limit** on the free plan, fine for a
-  student project, not for real production traffic.
-
-**Honesty note:** I have not been able to actually deploy this myself
-(no network access in the environment I built this in), so these steps
-follow Render's documented process closely but are untested end-to-end.
-If something doesn't match what you see on Render's dashboard exactly
-(their UI does change), tell me what you're seeing and I'll adjust.
-
-## Running in Shared Mode (once deployed)
-
-```
-java -Dquiz.server.url=https://your-app-name.onrender.com -jar target\quiz-application-api-1.0.0.jar
-```
-
-This skips starting a local server entirely and connects straight to
-your deployed one. Anyone who runs this same command (with the same URL)
-shares the same accounts and leaderboard, regardless of what machine
-they're on.
-
-Without that flag, it falls back to the original solo mode (local
-embedded server, local H2 file, private to that machine) -- see below.
 
 ## Two Ways to Run This
 
@@ -172,13 +101,6 @@ java -jar target/quiz-application-api-1.0.0.jar
 This starts the embedded API server in the background and opens the
 Swing UI automatically. No terminal commands to explain to anyone, no
 separate server to start first.
-
-**2. API only** (for development, testing with curl/Postman, or demoing
-the backend architecture on its own — no Swing window opens):
-
-```bash
-mvn spring-boot:run -Dspring-boot.run.main-class=com.hoangdo.quizapp.QuizApplication
-```
 
 ## Building a Standalone Installer (no Java installation required)
 
@@ -210,14 +132,6 @@ shortcut.
 
 (On macOS: use `--type dmg` or `--type pkg` instead of `--type exe`.
 `jpackage` must be run on the same OS you're targeting.)
-
-**Honesty note:** I have not been able to actually run `jpackage` against
-this project — no JDK/jpackage available in the environment I built this
-in. The Maven configuration above follows Spring Boot's documented
-packaging behavior, but treat the `jpackage` step specifically as
-untested. If it fails, the fallback is distributing the plain jar from
-step 1 with a one-line instruction: "install Java, then run
-`java -jar quiz-application-api-1.0.0.jar`."
 
 ## What I'd Add Next
 
