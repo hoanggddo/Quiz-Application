@@ -3,6 +3,7 @@ package com.hoangdo.quizapp.client;
 import javax.swing.*;
 import java.awt.*;
 import java.awt.event.*;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -12,7 +13,10 @@ import java.util.List;
  *
  *  - Submit: saves the score, then returns to category selection
  *    (does NOT close the whole app).
- *  - Reset: abandons the current attempt (no score saved) and returns
+ *  - Reset: restarts the SAME category from question 1, with the
+ *    question order re-shuffled. Does not save a score and does not
+ *    leave this screen.
+ *  - Quit: abandons the current attempt (no score saved) and returns
  *    to category selection.
  *  - Log Out: returns all the way to the login screen, so a different
  *    user (or the same one again) can sign in.
@@ -37,7 +41,7 @@ public class QuizClientApp extends JFrame implements ActionListener {
 
     JRadioButton[] radiobutton = new JRadioButton[4];
     JLabel questionLabel, title;
-    JButton nextBtn, submitBtn, resetBtn, hintBtn, historyBtn, logoutBtn;
+    JButton nextBtn, submitBtn, resetBtn, quitBtn, hintBtn, historyBtn, logoutBtn;
 
     int current = 0;
     int score = 0;
@@ -99,6 +103,11 @@ public class QuizClientApp extends JFrame implements ActionListener {
         resetBtn.addActionListener(this);
         add(resetBtn);
 
+        quitBtn = new JButton("Quit");
+        quitBtn.setBounds(550, 400, 120, 40);
+        quitBtn.addActionListener(this);
+        add(quitBtn);
+
         // Row 2: secondary actions
         hintBtn = new JButton("Hint");
         hintBtn.setBounds(100, 460, 120, 40);
@@ -134,12 +143,18 @@ public class QuizClientApp extends JFrame implements ActionListener {
                 JOptionPane.showMessageDialog(null, "No questions found for category: " + category);
                 return false;
             }
+            shuffleQuestions();
             return true;
         } catch (Exception e) {
             JOptionPane.showMessageDialog(null,
                     "Could not reach the quiz server. Is it running at localhost:8080?\n" + e.getMessage());
             return false;
         }
+    }
+
+    /** Randomizes question order. Called on initial load and every Reset. */
+    void shuffleQuestions() {
+        Collections.shuffle(questions);
     }
 
     public void actionPerformed(ActionEvent e) {
@@ -164,9 +179,20 @@ public class QuizClientApp extends JFrame implements ActionListener {
         }
 
         if (e.getSource() == resetBtn) {
+            // Restarts the SAME category from question 1, in a freshly
+            // shuffled order. No score is saved, and this stays on the
+            // quiz screen rather than returning to the menu.
+            shuffleQuestions();
+            current = 0;
+            score = 0;
+            nextBtn.setVisible(true);
+            submitBtn.setVisible(false);
+            set();
+        }
+
+        if (e.getSource() == quitBtn) {
             // Abandons the current attempt (no score saved) and goes
-            // back to category selection, rather than restarting the
-            // same category in place.
+            // back to category selection.
             returnToMenu();
         }
 
