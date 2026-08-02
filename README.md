@@ -4,6 +4,9 @@ A REST API backend for the Vietnamese Quiz Application, rebuilt from the
 original Java Swing desktop app into a Spring Boot service with a proper
 layered architecture and relational persistence.
 
+**Want to just run it?** Download the Windows installer from the
+[Releases page](../../releases) instead of building from source.
+
 ## Why This Exists
 
 The original version stored users in a plaintext `.txt` file and ran as a
