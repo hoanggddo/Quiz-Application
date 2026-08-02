@@ -26,7 +26,7 @@ class QuestionServiceTest {
 
     @Test
     void isCorrect_returnsTrueForMatchingAnswer_caseInsensitive() {
-        Question q = new Question("Vocabulary", "Q?", "A opt", "B opt", "C opt", "D opt", "B");
+        Question q = new Question("Vocabulary", "Q?", "A opt", "B opt", "C opt", "D opt", "B", "a hint");
         when(questionRepository.findById(1L)).thenReturn(Optional.of(q));
 
         assertThat(questionService.isCorrect(1L, "b")).isTrue();
@@ -35,7 +35,7 @@ class QuestionServiceTest {
 
     @Test
     void isCorrect_returnsFalseForWrongAnswer() {
-        Question q = new Question("Vocabulary", "Q?", "A opt", "B opt", "C opt", "D opt", "B");
+        Question q = new Question("Vocabulary", "Q?", "A opt", "B opt", "C opt", "D opt", "B", "a hint");
         when(questionRepository.findById(1L)).thenReturn(Optional.of(q));
 
         assertThat(questionService.isCorrect(1L, "A")).isFalse();
